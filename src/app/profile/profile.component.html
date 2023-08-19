@@ -1,0 +1,53 @@
+<div class="profile-container" *ngIf="profile()">
+  <div class="profile-wrapper">
+    <div class="profile-avatar">
+      <img [src]="profile()?.picture" alt="profile photo">
+    </div>
+    <div class="profile-info-wrapper">
+      <div class="username">
+        {{profile()?.username}}
+        <img *ngIf="profile()?.is_verified" class="verified" src="../../assets/icons/verify.svg" alt="verified">
+      </div>
+      <div class="user-stats">
+        <div class="stats-item">
+          <span class="value">12</span> <span class="value-name">posts</span>
+        </div>
+        <div class="stats-item">
+          <span class="value">{{profile()?.followers | shortNumber}}</span> <span class="value-name">followers</span>
+        </div>
+        <div class="stats-item">
+          <span class="value">12</span> <span class="value-name">following</span>
+        </div>
+      </div>
+      <div class="user-name">
+        {{profile()?.fullname}}
+      </div>
+      <div class="bio">CUT ID IUSD</div>
+      <a href="qweqwe" class="user-link">httms</a>
+    </div>
+  </div>
+
+  <div class="posts">
+    <a [href]="post.display_url" target="_blank" class="post" *ngFor="let post of feedResponse()?.items">
+      <img class="preview" [src]="post.carousel_media[0].image_versions2.candidates[0].url" alt="photo">
+      <span class="type">
+        <img *ngIf="post.video_url" src="../../assets/icons/video.png" alt="video">
+        <img *ngIf="!post.video_url" src="../../assets/icons/copy.png" alt="post">
+      </span>
+      <div class="stats">
+        <div class="stats-item">
+          <img src="../../assets/icons/like.png" alt="likes">
+          <span class="value">{{post.like_count | shortNumber}}</span>
+        </div>
+        <div class="stats-item">
+          <img src="../../assets/icons/comment.png" alt="comments">
+          <span class="value">{{post.comment_count | shortNumber}}</span>
+        </div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<div class="no-profile" *ngIf="!profile()">
+  No profile selected
+</div>

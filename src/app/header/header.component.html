@@ -1,0 +1,24 @@
+<div class="header-container">
+  <div class="search-wrapper">
+    <span class="search-icon">☌</span>
+    <input class="search-field" placeholder="Search by username" [formControl]="search"
+           (focusin)="setFocused()" (focusout)="setBlue()">
+    <div class="search-results" *ngIf="search.value?.length && isFocused()">
+      <ul>
+        <li class="search-item" *ngFor="let item of results()" (click)="selectProfile(item)">
+          <div class="user-info">
+            <div class="user-avatar">
+              <img [src]="item.picture" alt="user-photo">
+            </div>
+            <div class="username-wrapper">
+              <div class="username text-ellipsis">@{{item.username}}</div>
+              <div class="name text-ellipsis">{{item.fullname}}</div>
+            </div>
+          </div>
+          <div class="subscribers">{{item.followers | shortNumber}}</div>
+        </li>
+      </ul>
+      <div class="notification" *ngIf="!results()?.length && !isLoading()">Profile not found</div>
+    </div>
+  </div>
+</div>
