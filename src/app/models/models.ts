@@ -30,3 +30,19 @@ export interface FeedResponse {
   more_available: boolean;
   end_cursor: string;
 }
+
+export enum ContactType {
+  email = 'email',
+  youtube = 'youtube',
+}
+
+export interface ContactResponse {
+  success: boolean;
+  user_profile: {
+    contacts: {
+      type: ContactType;
+      value: string;
+      formatted_value: string;
+    }[];
+  }
+}

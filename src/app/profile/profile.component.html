@@ -22,8 +22,16 @@
       <div class="user-name">
         {{profile()?.fullname}}
       </div>
-      <div class="bio">CUT ID IUSD</div>
-      <a href="qweqwe" class="user-link">httms</a>
+      <div class="contacts-list" *ngIf="contacts()">
+        <div class="contact" *ngFor="let contact of contacts()?.user_profile?.contacts">
+          <a [href]="(contact.type == ContactType.email ? 'mailto:' : '') + contact.formatted_value"
+             target="_blank">
+            <img [src]="'./assets/icons/' + contact.type + '.svg'" alt="icon">
+            {{contact.value}}
+          </a>
+        </div>
+
+      </div>
     </div>
   </div>
 

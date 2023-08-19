@@ -11,9 +11,9 @@ import { InstagramApiService } from '../services/instagram-api/instagram-api.ser
 import { GlobalStoreService } from '../services/global-store/global-store.service';
 import { CommonModule } from '@angular/common';
 import { ShortNumberPipe } from '../pipes/short-number.pipe';
-import { catchError, delay, Observable, of, switchMap, takeUntil, tap } from 'rxjs';
+import { catchError, delay, forkJoin, Observable, of, switchMap, takeUntil, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FeedResponse, SearchProfile } from '../models/models';
+import { ContactResponse, ContactType, FeedResponse, SearchProfile } from '../models/models';
 
 @Component({
   selector: 'app-profile',
@@ -27,9 +27,12 @@ import { FeedResponse, SearchProfile } from '../models/models';
   ]
 })
 export class ProfileComponent implements OnInit {
-  private destroyRef = inject(DestroyRef);
   public profile = signal<SearchProfile | null>(null);
+  public contacts = signal<ContactResponse | null>(null);
   public feedResponse = signal<FeedResponse | null>(null);
+  public ContactType = ContactType;
+
+  private destroyRef = inject(DestroyRef);
   private isLoading = false;
 
   constructor(
@@ -44,7 +47,10 @@ export class ProfileComponent implements OnInit {
         this.profile.set(profile);
         this.isLoading = false;
 
-        return this.getUsersFeed();
+        return forkJoin([
+          this.getUsersFeed(),
+          this.getUsersStats(),
+        ]);
       }),
       takeUntilDestroyed(this.destroyRef),
     ).subscribe();
@@ -89,6 +95,14 @@ export class ProfileComponent implements OnInit {
         return of(this.feedResponse());
       }),
     );
+  }
+
+  public getUsersStats(): Observable<ContactResponse | null> {
+    return this.instagramApiService.getContacts(`${this.profile()?.username}`).pipe(
+      tap(contacts => {
+        this.contacts.set(contacts);
+      }
+    ));
   }
 }
 

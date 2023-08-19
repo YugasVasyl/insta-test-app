@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { FeedResponse, SearchProfileResponse } from '../../models/models';
+import { ContactResponse, FeedResponse, SearchProfileResponse } from '../../models/models';
 
 @Injectable({
   providedIn: 'root'
@@ -191,11 +191,34 @@ export class InstagramApiService {
     // return this.http.get<FeedResponse>(`${this.apiUrl}/raw/ig/user/feed/`, params);
   }
 
-  public getContacts(url: string, platform = 'instagram'): Observable<any> {
+  public getContacts(url: string, platform = 'instagram'): Observable<ContactResponse> {
     const params = {
       params: new HttpParams().set('url', url).set('platform', platform),
     };
 
-    return this.http.get(`${this.apiUrl}/exports/contacts`);
+    return of({
+      "success": true,
+      "user_profile": {
+        "user_id": "10529896",
+        "username": "niomismart",
+        "url": "https://www.instagram.com/niomismart",
+        "picture": "https://imgp.sptds.icu/?https://scontent.cdninstagram.com/t51.2885-19/s320x320/60685279_761107720953493_4480687278221426688_n.jpg",
+        "fullname": "Niomi Smart",
+        "contacts": [
+          {
+            "type": "email",
+            "value": "niomi.smart@gleamfutures.com",
+            "formatted_value": "niomi.smart@gleamfutures.com"
+          },
+          {
+            "type": "youtube",
+            "value": "niomismart",
+            "formatted_value": "https://www.youtube.com/user/niomismart"
+          }
+        ]
+      }
+    }) as any;
+
+    // return this.http.get<ContactResponse>(`${this.apiUrl}/exports/contacts`);
   }
 }
