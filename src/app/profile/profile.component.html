@@ -6,7 +6,7 @@
     <div class="profile-info-wrapper">
       <div class="username">
         {{profile()?.username}}
-        <img *ngIf="profile()?.is_verified" class="verified" src="../../assets/icons/verify.svg" alt="verified">
+        <img *ngIf="profile()?.is_verified" class="verified" src="./assets/icons/verify.svg" alt="verified">
       </div>
       <div class="user-stats">
         <div class="stats-item">
@@ -26,8 +26,7 @@
         <div class="contact" *ngFor="let contact of contacts()?.user_profile?.contacts">
           <a [href]="(contact.type == ContactType.email ? 'mailto:' : '') + contact.formatted_value"
              target="_blank">
-            <img [src]="'./assets/icons/' + contact.type + '.svg'" alt="icon">
-            {{contact.value}}
+            {{contact.formatted_value}}
           </a>
         </div>
 
@@ -39,16 +38,16 @@
     <a [href]="post.display_url" target="_blank" class="post" *ngFor="let post of feedResponse()?.items">
       <img class="preview" [src]="post.display_url" alt="photo">
       <span class="type">
-        <img *ngIf="post.video_url" src="../../assets/icons/video.png" alt="video">
+        <img *ngIf="post.video_url" src="./assets/icons/video.png" alt="video">
         <img *ngIf="post.carousel_media_count > 1 && !post.video_url" src="../../assets/icons/copy.png" alt="post">
       </span>
       <div class="stats">
         <div class="stats-item">
-          <img src="../../assets/icons/like.png" alt="likes">
+          <img src="./assets/icons/like.png" alt="likes">
           <span class="value">{{post.like_count | shortNumber}}</span>
         </div>
         <div class="stats-item">
-          <img src="../../assets/icons/comment.png" alt="comments">
+          <img src="./assets/icons/comment.png" alt="comments">
           <span class="value">{{post.comment_count | shortNumber}}</span>
         </div>
       </div>
