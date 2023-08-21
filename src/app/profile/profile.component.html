@@ -37,10 +37,10 @@
 
   <div class="posts">
     <a [href]="post.display_url" target="_blank" class="post" *ngFor="let post of feedResponse()?.items">
-      <img class="preview" [src]="post.carousel_media[0].image_versions2.candidates[0].url" alt="photo">
+      <img class="preview" [src]="post.display_url" alt="photo">
       <span class="type">
         <img *ngIf="post.video_url" src="../../assets/icons/video.png" alt="video">
-        <img *ngIf="!post.video_url" src="../../assets/icons/copy.png" alt="post">
+        <img *ngIf="post.carousel_media_count > 1 && !post.video_url" src="../../assets/icons/copy.png" alt="post">
       </span>
       <div class="stats">
         <div class="stats-item">

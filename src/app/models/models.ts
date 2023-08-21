@@ -23,6 +23,7 @@ export interface FeedItem {
       }[];
     };
   }[];
+  carousel_media_count: number;
 }
 
 export interface FeedResponse {

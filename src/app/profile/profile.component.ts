@@ -11,7 +11,7 @@ import { InstagramApiService } from '../services/instagram-api/instagram-api.ser
 import { GlobalStoreService } from '../services/global-store/global-store.service';
 import { CommonModule } from '@angular/common';
 import { ShortNumberPipe } from '../pipes/short-number.pipe';
-import { catchError, delay, forkJoin, Observable, of, switchMap, takeUntil, tap } from 'rxjs';
+import { catchError, delay, filter, forkJoin, Observable, of, switchMap, takeUntil, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ContactResponse, ContactType, FeedResponse, SearchProfile } from '../models/models';
 
@@ -42,14 +42,16 @@ export class ProfileComponent implements OnInit {
 
   public ngOnInit(): void {
     this.globalStoreService.selectedProfile.pipe(
+      filter(profile => !!profile),
       switchMap((profile) => {
+        this.feedResponse.set(null);
         this.feedResponse.set(null);
         this.profile.set(profile);
         this.isLoading = false;
 
         return forkJoin([
           this.getUsersFeed(),
-          this.getUsersStats(),
+          this.getUserContacts(),
         ]);
       }),
       takeUntilDestroyed(this.destroyRef),
@@ -97,12 +99,15 @@ export class ProfileComponent implements OnInit {
     );
   }
 
-  public getUsersStats(): Observable<ContactResponse | null> {
+  public getUserContacts(): Observable<ContactResponse | null> {
     return this.instagramApiService.getContacts(`${this.profile()?.username}`).pipe(
       tap(contacts => {
         this.contacts.set(contacts);
-      }
-    ));
+      }),
+      catchError(() => {
+        return of(null);
+      }),
+    );
   }
 }
 
