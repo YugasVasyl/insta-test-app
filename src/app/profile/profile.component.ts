@@ -45,7 +45,7 @@ export class ProfileComponent implements OnInit {
       filter(profile => !!profile),
       switchMap((profile) => {
         this.feedResponse.set(null);
-        this.feedResponse.set(null);
+        this.contacts.set(null);
         this.profile.set(profile);
         this.isLoading = false;
 
